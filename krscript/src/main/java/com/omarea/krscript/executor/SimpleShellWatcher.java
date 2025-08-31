@@ -14,9 +14,9 @@ import java.nio.charset.StandardCharsets;
 public class SimpleShellWatcher {
 
     /**
-     * 设置日志处理Handler
+     * Set log processing Handler
      *
-     * @param process          Runtime进程
+     * @param process          Runtime process
      * @param shellHandlerBase ShellHandlerBase
      */
     public void setHandler(Context context, Process process, final ShellHandlerBase shellHandlerBase, final Runnable onExit) {

@@ -53,4 +53,5 @@
     <string name="picker_not_item">No available options!</string>
     <string name="picker_select_none">No item selected!</string>
     <string name="xml_config_parse_failed">Failed to parse config file</string>
+    <string name="interface_render_exception">Interface rendering exception</string>
 </resources>
