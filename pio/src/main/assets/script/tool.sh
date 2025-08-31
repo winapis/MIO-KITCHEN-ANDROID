@@ -1,4 +1,4 @@
-#新建项目
+# Create new project
 [ -e ${XBJ} ] && xm=$(cat ${XBJ})
 [ ! -d $mdir/$xm ] && mkdir -p $mdir/$xm
 dg() {
@@ -23,10 +23,10 @@ extract_part() {
   for i in ${IMG}; do
     e=${i##*/}
     File="$Extract/${e}.img"
-    [[ ! -L ${i} ]] && echo "！$e分区不存在无法提取"
-    echo "- 开始提取$e分区"
+    [[ ! -L ${i} ]] && echo "! The $e partition does not exist and cannot be extracted"
+    echo "- Starting extraction of $e partition"
     dd if="${i}" of="$File"
-    echo "- 已提取$e分区到：$File"
+    echo "- Extracted $e partition to: $File"
     echo
   done
 }
@@ -58,7 +58,7 @@ parts() {
         elif [[ $size -le 1024 ]]; then
           File_Type=${size}b
         fi
-        [ "$File_Type" != "b" ] && echo "$BLOCK|$Row 大小：$File_Type"
+        [ "$File_Type" != "b" ] && echo "$BLOCK|$Row Size: $File_Type"
       else
         echo "$BLOCK|$Row"
       fi
@@ -71,17 +71,17 @@ tqdgjx() {
   fi
   if [ $qptq = 1 ]; then
     if [ "$tqjx" = "super.img" ]; then
-      echo "- 正在提取:super.img"
+      echo "- Extracting: super.img"
       utils lpunpack $zml/$xm/super.img $zml/$xm/
       errorlevel=$?
       if [ $? = 0 ] && [ $del = 1 ]; then
         rm -rf $zml/$xm/super.img
       else
-        [ $errorlevel = 1 ] && warn "解包super时异常"
+        [ $errorlevel = 1 ] && warn "Error occurred while unpacking super"
       fi
     fi
     if [ "$tqjx" = "payload.bin" ]; then
-      echo "- 正在解包:payload.bin"
+      echo "- Unpacking: payload.bin"
       utils payload_all $zml/$xm/payload.bin $zml/$xm/
       if [ $? = 0 ] && [ $del = 1 ]; then
         rm -rf $zml/$xm/$tqjx
@@ -90,13 +90,13 @@ tqdgjx() {
     exit 0
   fi
   for i in ${jxs}; do
-    echo "- 正在提取$i"
+    echo "- Extracting $i"
     [ "$tqjx" = "super.img" ] && utils lpunpack $zml/$xm/super.img $zml/$xm/ ${i} 1
     [ "$tqjx" = "payload.bin" ] && utils payload $zml/$xm/payload.bin $zml/$xm/ $i
   done
   [ $del = 1 ] && rm -rf $zml/$xm/$tqjx
   for i in $(ls *_a.img); do
-    echo "重命名$i到$(echo $i | sed 's/_a//g')"
+    echo "Renaming $i to $(echo $i | sed 's/_a//g')"
     mv $i $(echo $i | sed 's/_a//g')
   done
 }
@@ -106,18 +106,18 @@ cm() {
   done
 }
 flash_img() {
-  [[ -z ${iMG} ]] && error "刷入"
+  [[ -z ${iMG} ]] && error "flash"
   IFS=$'\n'
   e=${IMG##*/}
-  echo "- 您当前选择了$e分区"
-  echo "- 刷入文件路径：$Brush_in"
-  echo "- 检测刷入镜像文件是否存在"
-  [[ ! -L "${i}MG" ]] && abort "！$e分区不存在无法刷入"
+  echo "- You have currently selected the $e partition"
+  echo "- Flash file path: $Brush_in"
+  echo "- Checking if flash image file exists"
+  [[ ! -L "${i}MG" ]] && abort "! The $e partition does not exist and cannot be flashed"
   if [[ -f "$Brush_in" ]]; then
-    echo "- 开始刷写$e分区"
+    echo "- Starting to flash $e partition"
     dd if="$Brush_in" of="${i}MG"
     if [[ $CQ = 1 ]]; then
-      echo "即将重启到恢复模式，倒计时开始……"
+      echo "About to restart to recovery mode, countdown starting..."
       for i in $(seq 4 -1 1); do
         echo ${i}
         sleep 1
@@ -125,7 +125,7 @@ flash_img() {
       reboot recovery
     fi
     if [[ $CQ1 = 1 ]]; then
-      echo "即将重启手机，倒计时开始……"
+      echo "About to restart the phone, countdown starting..."
       for i in $(seq 4 -1 1); do
         echo ${i}
         sleep 1
@@ -133,9 +133,9 @@ flash_img() {
       reboot
     fi
   else
-    error "！$Brush_in刷入文件不存在无法刷写到$e分区，操作"
+    error "! Flash file $Brush_in does not exist, cannot flash to $e partition, operation"
   fi
-  echo "- 完成"
+  echo "- Complete"
   sleep 2
 }
 gszh() {
@@ -146,11 +146,11 @@ gszh() {
       if [ $info = "ext" ] || [ $info = "erofs" ] || [ $info = "super" ]; then
         rts $zml/$xm/${i}.img
       fi
-      [ $info = "sparse" ] && warn "${i}已是sparse格式"
+      [ $info = "sparse" ] && warn "${i} is already in sparse format"
     fi
     if [ $gs = raw ]; then
       if [ $info = "ext" ] || [ $info = "erofs" ] || [ $info = "super" ]; then
-        warn "$i已经为raw镜像"
+        warn "$i is already a raw image"
       fi
       [ $info = "sparse" ] && rts $zml/$xm/${i}.img
     fi
@@ -164,7 +164,7 @@ gszh() {
         fi
       fi
       if [ $gs = br ]; then
-        echo "[dat]到[br]:${i}.new.dat"
+        echo "[dat] to [br]: ${i}.new.dat"
         brotli -q $brlv -j -w 24 $zml/$xm/${i}.new.dat -o $zml/$xm/${i}.new.dat.br
         if [ -f $zml/$xm/${i}.new.dat.br ]; then
           [ $del = 1 ] && rm -rf $zml/$xm/${i}.new.dat
@@ -178,34 +178,34 @@ warn() {
 }
 download() {
   if [ -z $romdz ]; then
-    warn 请输入有效内容
+    warn "Please enter valid content"
     exit 1
   fi
   rname=$(basename $romdz)
   if [ -e $zml/${rname%?*} ]; then
-    warn "您似乎已经下载了这个文件"
-    echo "要重新下载吗"
+    warn "You seem to have already downloaded this file"
+    echo "Do you want to download again?"
     if pd; then
       rm -rf $zml/${rname%?*}
     else
-      echo "跳过"
+      echo "Skip"
       [ $jb = 0 ] && exit 0
     fi
     if [ $jb = 1 ]; then
-      echo "要解包这个文件吗"
+      echo "Do you want to unpack this file?"
       if pd; then
         xzrom=$zml/${rname%?*}
         UZ
       else
-        echo "跳过解包"
+        echo "Skip unpacking"
         exit 0
       fi
     fi
   fi
-  echo "已开启最大速率"
+  echo "Maximum speed enabled"
   curl -# -L -k $romdz -o $zml/${rname%?*}
   if [ $? = 1 ]; then
-    error "下载失败"
+    error "Download failed"
     rm -rf $zml/${rname%?*}
   fi
   if [ $? = 0 ] && [ $jb = 1 ]; then
@@ -214,18 +214,18 @@ download() {
   fi
 }
 error() {
-  echo "$1失败，请截图联系开发者Kamtena!" >&2
+  echo "$1 failed, please take a screenshot and contact developer Kamtena!" >&2
   exit 1
 }
 make_ext4() {
   [ ${img_type} = sparse ] && argv=-s
   make_ext4fs -J -T 1 $argv -S $con -l $size -C $fs -L $1 -a $1 $zml/$xm/$1.img $mdir/$xm/$1
-  [ $? = 1 ] && error "打包"
+  [ $? = 1 ] && error "packing"
   if [ $jxys = 1 ]; then
     if [ ${img_type} = raw ]; then
       resize2fs -M $zml/$xm/$1.img
     else
-      warn "您已打包为sparse，无法压缩"
+      warn "You have packed as sparse, cannot compress"
     fi
   fi
 }
@@ -235,7 +235,7 @@ mkeimg() {
   [ "$Reading" = "ro" ] && dx=-s
   bin/e2fsdroid -e -T 1230768000 -C $fs -S $con -f $mdir/$xm/$1 -a /$1 $dx $zml/$xm/$1.img
   if [ $? = 1 ]; then
-    error "打包"
+    error "packing"
     rm -rf $zml/$xm/$1.img
   fi
   [ $jxys = 1 ] && resize2fs -M $zml/$xm/$1.img
@@ -266,9 +266,9 @@ packsuper() {
   [ "$from" = "sparse" ] && command+="--sparse "
   lpmake $command --out $zml/$xm/super.img
   if [ $? = 0 ]; then
-    echo " - 打包成功！"
+    echo " - Packing successful!"
   else
-    error " - 打包super"
+    error " - packing super"
   fi
 }
 findfile() {
@@ -288,7 +288,7 @@ readsize() {
     if [ -e $mdir/$xm/config/${1}_size.txt ]; then
       size=$(cat $mdir/$xm/config/${1}_size.txt)
     else
-      warn "镜像大小配置不存在，切换为动态读取"
+      warn "Image size configuration does not exist, switching to dynamic reading"
       size=$(utils rsize $mdir/$xm/${1} 1 $list)
     fi
     size=$(utils rsize $mdir/$xm/${1} 1 $list)
@@ -306,7 +306,7 @@ pack() {
     fs=$mdir/$xm/config/"${i}"_fs_config
     con=$mdir/$xm/config/"${i}"_file_contexts
     utils patch_fs_con $mdir/$xm/${i} $fs $con
-    echo " - 正在打包${i}"
+    echo " - Packing ${i}"
     readsize "${i}"
     if [ ! -f $mdir/$xm/config/${i}_erofs ]; then
       if [ "$zhua" != "1" ]; then
@@ -322,47 +322,47 @@ pack() {
       fi
     fi
     if [ -f $zml/$xm/${i}.img ]; then
-      echo " - 打包${i}完成"
+      echo " - Packing ${i} complete"
       [ $del = 1 ] && rm -rf $mdir/$xm/$i
     else
-      [ $? = 1 ] && warn "打包失败，不删除源文件"
+      [ $? = 1 ] && warn "Packing failed, source files not deleted"
     fi
   done
 }
 rts() {
-  echo "[raw]到[sparse]:$(basename $1)"
+  echo "[raw] to [sparse]: $(basename $1)"
   img2simg $1 $1_sparse
   [ -e "$1"_sparse ] && rm -rf $1
   mv "$1"_sparse $1
 }
 str() {
-  echo "[sparse]到[raw]：$(basename $1)"
+  echo "[sparse] to [raw]: $(basename $1)"
   utils simg2img "$1"
 }
 mn() {
   if [ -d $zml/"$xmmc" -o -d $mdir/"$xmmc" ]; then
-    echo "- 项目已存在，将自动重命名！"
+    echo "- Project already exists, will be automatically renamed!"
     xmmc="$xmmc"-$(date "+%Y%m%d%H%M%S")
-    echo "- 正在创建：${xmmc}"
+    echo "- Creating: ${xmmc}"
     mkdir -p $zml/"$xmmc"
     mkdir -p $mdir/"$xmmc"
   else
-    echo "- 正在创建：${xmmc}"
+    echo "- Creating: ${xmmc}"
     mkdir -p $zml/"$xmmc"
     mkdir -p $mdir/"$xmmc"
   fi
-  echo "- 创建完成！"
+  echo "- Creation complete!"
   echo ${xmmc} >${XBJ}
 }
 pd() {
   if [ $(id -u) = 0 ]; then
-    echo "音量键选择"
+    echo "Volume key selection"
   else
-    warn "您正在使用非Root模式，默认选择否"
+    warn "You are using non-Root mode, default selection is No"
     return 1
     exit 0
   fi
-  echo "[+]是 [-]否"
+  echo "[+]Yes [-]No"
   key=$(getevent -qlc 1)
   Up=$(echo $key | grep KEY_VOLUMEUP)
   Down=$(echo $key | grep KEY_VOLUMEDOWN)
@@ -383,7 +383,7 @@ finddir() {
     basename ${i}
   done
 }
-#查看项目
+# View project
 check() {
   for i in $(ls -d $zml/*/); do
     basename ${i}
@@ -397,25 +397,25 @@ lsmdir() {
 }
 zy() {
   if [ ! -d $zml/$xm ] || [ -z $xm ]; then
-    echo "请选择一个正确的项目"
+    echo "Please select a correct project"
   else
-    echo "当前项目：$zml/$xm"
+    echo "Current project: $zml/$xm"
   fi
 }
 unlock() {
   if [ ! -d $zml/$xm ] || [ -z $xm ]; then
-    echo "请重新选择项目"
+    echo "Please reselect project"
   else
     echo 'unlocked'
   fi
 }
-#删除项目
+# Delete project
 del() {
   for i in ${xms}; do
-    echo "- 正在删除：${i}"
+    echo "- Deleting: ${i}"
     rm -rf $zml/${i}
     rm -rf $mdir/${i}
-    echo "- 删除${i}完成"
+    echo "- Deletion of ${i} complete"
   done
 }
 UZ() {
@@ -427,9 +427,9 @@ UZ() {
     mkdir -p $zml/$name
     mkdir -p $mdir/$name
   fi
-  echo "- 开始解包$xzrom"
+  echo "- Starting to unpack $xzrom"
   utils zip_extract "$xzrom" $zml/$name
-  echo "- 完成"
+  echo "- Complete"
   echo $name >${XBJ}
   [ $del = 1 ] && rm -rf "$xzrom"
 }
@@ -443,13 +443,13 @@ UN() {
 }
 delmod() {
   for i in ${mod}; do
-    echo "正在移除${i}"
+    echo "Removing ${i}"
     [ -f $START_DIR/module/${i}/uninstall.sh ] && source $START_DIR/module/${i}/uninstall.sh
     rm -rf $START_DIR/module/${i}
     if [ "$?" == "0" ]; then
-      echo "已删除${i}"
+      echo "Deleted ${i}"
     else
-      echo "删除${i}失败"
+      echo "Failed to delete ${i}"
     fi
   done
 }
@@ -458,17 +458,17 @@ module() {
 <?xml version="1.0" encoding="utf-8"?>
 <group reload="true">
     <action reload="true" auto-off="true">
-        <title>安装模块</title>
+        <title>Install Module</title>
         <set>script/tool.sh install_module</set>
-        <param name="file" title="请选择模块支持多选：" options-sh="script/tool.sh mpk" desc="识别MIO-Ultra项目下的文件" required="true" multiple="true"/>
+        <param name="file" title="Please select module(s), multiple selection supported:" options-sh="script/tool.sh mpk" desc="Recognize files under MIO-Ultra project" required="true" multiple="true"/>
     </action>
     <action reload="true" auto-off="true">
-        <title>删除模块</title>
+        <title>Delete Module</title>
         <set>script/tool.sh delmod</set>
-        <param name="mod" title="请选择模块支持多选：" options-sh="script/tool.sh cm" desc="识别已安装的模块" required="true" multiple="true"/>
+        <param name="mod" title="Please select module(s), multiple selection supported:" options-sh="script/tool.sh cm" desc="Recognize installed modules" required="true" multiple="true"/>
     </action>
 </group>
-<group title="已安装的模块">
+<group title="Installed Modules">
 Mod
   for var in $(find $START_DIR/module/ -name index.xml); do
     cat $var
@@ -498,30 +498,30 @@ zdyfj() {
 }
 uimg() {
   if [ $info = "ext" ]; then
-    echo "- 正在解包：$i.img [$info]"
+    echo "- Unpacking: $i.img [$info]"
     utils extract_ext $mdir/$xm/ $zml/$xm/$image
     exit 0
   elif [ $info = "erofs" ]; then
-    echo "- 正在解包：${i}.img [$info]"
+    echo "- Unpacking: ${i}.img [$info]"
     extract.erofs -i $zml/$xm/$image -o $mdir/$xm/ -x
     echo "erofs" >$mdir/$xm/config/${i}_erofs
     exit 0
   elif [ $info = sparse ]; then
-    echo "- 正在转换：${i} [sparse --> raw]"
+    echo "- Converting: ${i} [sparse --> raw]"
     utils simg2img $image
     uimg $i
   elif [ "$info" = "super" ]; then
-    echo "- 正在提取: super.img"
+    echo "- Extracting: super.img"
     utils lpunpack $zml/$xm/$image $zml/$xm/
     exit 0
   elif [ "$info" = "boot" ]; then
-    echo "- 正在解包：$i.img [$info]"
+    echo "- Unpacking: $i.img [$info]"
     mkdir -p $mdir/$xm/$i
     cd $mdir/$xm/$i
     cp -f $zml/$xm/$image $mdir/$xm/$i
     magiskboot unpack -h $image &>/dev/null
     if [ "$?" = "1" ]; then
-      echo "- 失败！"
+      echo "- Failed!"
       rm -rf $mdir/$xm/$i
       continue
     else
@@ -539,22 +539,22 @@ uimg() {
         cd ramdisk
         EXTRACT_UNSAFE_SYMLINKS=1 cpio -d -F ../ramdisk.cpio -i 2>&1
         if [ $? != 0 -o ! "$(ls)" ]; then
-          echo "- 失败!"
+          echo "- Failed!"
         else
           [ ! -d $mdir/$xm/config ] && mkdir -p $mdir/$xm/config
           echo $info >$mdir/$xm/config/"$i"_info
           echo $comp >>$mdir/$xm/config/"$i"_info
         fi
       else
-        echo "- 未找到ramdisk!"
+        echo "- Ramdisk not found!"
       fi
     fi
   else
-    echo "- 不支持解包：${i}.img!"
+    echo "- Unpacking not supported: ${i}.img!"
   fi
 }
 rboot() {
-  echo "- 开始打包: ${i}.img"
+  echo "- Starting to pack: ${i}.img"
   cd "$mdir/$xm/$i/ramdisk"
   find | sed 1d | cpio -H newc -R 0:0 -o -F ../ramdisk-new.cpio
   cd ..
@@ -562,7 +562,7 @@ rboot() {
   if [ "$comp" ]; then
     magiskboot compress=$comp ramdisk-new.cpio 2>&1
     if [ "$fixb" = "1" ]; then
-      echo "- 修复build"
+      echo "- Fix build"
       magiskboot cpio $$mdir/$xm/$i/ramdisk.cpio "extract prop.default prop.default"
       magiskboot cpio ramdisk.cpio "add 777 prop.default $$mdir/$xm/$i/prop.default"
       magiskboot cpio ramdisk.cpio "rm system/bin/variant-script.sh"
@@ -570,7 +570,7 @@ rboot() {
     if [ $? != 0 ] && $comp --help 2>/dev/null; then
       $comp -9c ramdisk-new.cpio >ramdisk.cpio.$comp
       if [ $? != 0 ]; then
-        echo "重新打包ramdisk失败..."
+        echo "Failed to repack ramdisk..."
         rm -f ramdisk-new.cpio
         break
       fi
@@ -583,7 +583,7 @@ rboot() {
     cpio) nocompflag="-n" ;;
     esac
     magiskboot repack $nocompflag ${i}.img $zml/$xm/${i}_new.img 2>&1
-    echo "- 完成"
+    echo "- Complete"
     exit 0
   fi
 }
