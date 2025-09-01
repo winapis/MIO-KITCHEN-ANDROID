@@ -68,4 +68,8 @@
     <string name="now_loading">Loading...</string>
     <string name="directory_is_empty">There are no files in this directory!</string>
     <string name="confirm_select_directory">Select directory?</string>
+    <string name="no_file_read_permission">No permission to read files!</string>
+    <string name="failed_to_get_file_list">Failed to get file list!</string>
+    <string name="failed_to_start_file_selector">Failed to start built-in file selector!</string>
+    <string name="invalid_page_information">Invalid page information</string>
 </resources>

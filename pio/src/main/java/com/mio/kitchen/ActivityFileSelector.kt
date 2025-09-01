@@ -82,7 +82,7 @@ class ActivityFileSelector : AppCompatActivity() {
 
         if (requestCode == 111) {
             if (!grant) {
-                Toast.makeText(applicationContext, "没有读取文件的权限！", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, getString(R.string.no_file_read_permission), Toast.LENGTH_LONG).show()
             } else {
                 loadData()
             }
@@ -105,7 +105,7 @@ class ActivityFileSelector : AppCompatActivity() {
             if (sdcard.exists() && sdcard.isDirectory) {
                 val list = sdcard.listFiles()
                 if (list == null) {
-                    Toast.makeText(applicationContext, "获取文件列表失败！", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, getString(R.string.failed_to_get_file_list), Toast.LENGTH_LONG).show()
                     return
                 }
                 val onSelected =  Runnable {

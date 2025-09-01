@@ -54,4 +54,5 @@
     <string name="picker_select_none">No item selected!</string>
     <string name="xml_config_parse_failed">Failed to parse config file</string>
     <string name="interface_render_exception">Interface rendering exception</string>
+    <string name="failed_to_start_shell_process">Could not start command line process</string>
 </resources>

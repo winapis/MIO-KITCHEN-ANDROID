@@ -54,4 +54,5 @@
     <string name="picker_select_none">未选中任何一项！</string>
     <string name="xml_config_parse_failed">解析配置文件失败</string>
     <string name="interface_render_exception">界面渲染异常</string>
+    <string name="failed_to_start_shell_process">未能启动命令行进程</string>
 </resources>
