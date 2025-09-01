@@ -104,7 +104,7 @@ public abstract class ShellHandlerBase extends Handler {
     }
 
     /**
-     * 输出指定颜色的内容
+     * Output content with specified color
      *
      */
     protected void updateLog(final Object msg, final String color) {

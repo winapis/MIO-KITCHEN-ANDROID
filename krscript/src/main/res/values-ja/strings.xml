@@ -15,4 +15,6 @@
   <string name="kr_please_choose_folder">ディレクトリを選択してください</string>
   <string name="kr_page_loading">XML コンフィグを解析中</string>
   <string name="kr_lock_message">この機能のために Mutex が取得されます</string>
+  <string name="interface_render_exception">インターフェース レンダリング例外</string>
+  <string name="failed_to_start_shell_process">コマンドラインプロセスを開始できませんでした</string>
 </resources>

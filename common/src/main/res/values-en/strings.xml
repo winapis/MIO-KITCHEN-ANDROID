@@ -12,4 +12,5 @@
     <string name="btn_skip">Skip</string>
     <string name="dialog_title_info">Information</string>
     <string name="dialog_message_info">Message content</string>
+    <string name="loading_please_wait">Loading, please wait...</string>
 </resources>
